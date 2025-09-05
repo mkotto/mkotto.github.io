@@ -5,8 +5,64 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <a href="https://www.linkedin.com/in/mairbek-tungaev-50a0b157/">LinkedIn</a>
-    <a href="https://www.last.fm/user/everjump">Last.fm</a>
+    <style>
+        body, html {
+            margin: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .bg-rotate {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(45deg, #3b4f96, #800480, #808000, #4B5320);
+            background-size: 200% 400%;
+            animation: rotateBg 20s forwards infinite;
+            z-index: -21;
+        }
+
+        @keyframes rotateBg {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        a {
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+    <div class="bg-rotate"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="mt-4"></div>
+                <h4>
+                    <img style="border-radius: 25px;" src="assets/linkedinlogo.png" />
+                    <a href="https://www.linkedin.com/in/mairbek-tungaev-50a0b157/">LinkedIn</a>
+                </h4>
+                <h4>
+                    <img style="border-radius: 25px" src="assets/lastfmlogo.png" />
+                    <a href="https://www.last.fm/user/everjump">Last.fm</a>
+                </h4>
+                <h4>
+                    <img style="border-radius: 25px" src="assets/githublogo.png" />
+                    <a href="https://github.com/mkotto">GitHub</a>
+                </h4>
+            </div>
+        </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
