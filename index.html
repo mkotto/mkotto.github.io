@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visit card</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
@@ -56,13 +58,54 @@
         a {
             color: white;
             text-decoration: none;
+            display: inline-block;
+            padding: 5px 0;
+        }
+
+        h4 {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
         }
         img {
             border-radius: 25px;
+            width: 48px;
+            height: 48px;
+            vertical-align: middle;
+            margin-right: 12px;
         }
         .container {
             position: relative;
             z-index: 1;
+        }
+
+        /* Mobile responsive styles */
+        @media (max-width: 768px) {
+            img {
+                width: 36px;
+                height: 36px;
+                margin-right: 10px;
+            }
+
+            h4 {
+                font-size: 1.1rem;
+            }
+
+            .container {
+                padding: 0 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            img {
+                width: 32px;
+                height: 32px;
+                margin-right: 8px;
+            }
+
+            h4 {
+                font-size: 1rem;
+            }
         }
     </style>
 
