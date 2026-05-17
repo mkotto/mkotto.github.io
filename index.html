@@ -80,12 +80,14 @@
             transform: translateY(-2px);
         }
 
-        .tile img {
+        .tile img,
+        .tile svg {
             width: 40px;
             height: 40px;
             border-radius: 8px;
             object-fit: contain;
         }
+
 
         @media (prefers-reduced-motion: reduce) {
             body {
@@ -104,10 +106,12 @@
                 font-size: 0.9rem;
             }
 
-            .tile img {
+            .tile img,
+            .tile svg {
                 width: 48px;
                 height: 48px;
             }
+
         }
     </style>
 </head>
@@ -131,6 +135,15 @@
             <a class="tile" href="https://steamcommunity.com/id/dewdar" target="_blank" rel="noopener noreferrer">
                 <img src="assets/steamlogo.png" alt="Steam">
                 Steam
+            </a>
+            <a class="tile" href="https://gitlab.com/mairbek" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 380 380" xmlns="http://www.w3.org/2000/svg" aria-label="GitLab">
+                    <path d="M282.83,170.73l-.27-.69-26.14-68.22a6.81,6.81,0,0,0-2.69-3.24,7,7,0,0,0-8,.43,7,7,0,0,0-2.32,3.52l-17.65,54H154.29L136.64,102.53a6.86,6.86,0,0,0-2.32-3.52,7,7,0,0,0-8-.43,6.87,6.87,0,0,0-2.69,3.24L97.44,170l-.26.69a48.54,48.54,0,0,0,16.1,56.1l.09.07.24.17,39.82,29.82,19.7,14.91,12,9.06a8.07,8.07,0,0,0,9.76,0l12-9.06,19.7-14.91,40.06-30,.1-.08A48.56,48.56,0,0,0,282.83,170.73Z" fill="#E24329"/>
+                    <path d="M282.83,170.73l-.27-.69a88.3,88.3,0,0,0-35.15,19.86L190,238.25c19.55,14.79,36.57,27.64,36.57,27.64l40.06-30,.1-.08A48.56,48.56,0,0,0,282.83,170.73Z" fill="#FC6D26"/>
+                    <path d="M153.43,265.89l19.7,14.91,12,9.06a8.07,8.07,0,0,0,9.76,0l12-9.06,19.7-14.91S209.55,253,190,238.25C170.45,253,153.43,265.89,153.43,265.89Z" fill="#FCA326"/>
+                    <path d="M132.58,190.55A88.19,88.19,0,0,0,97.44,170l-.26.69a48.54,48.54,0,0,0,16.1,56.1l.09.07.24.17,39.82,29.82S170.45,253,190,238.25Z" fill="#FC6D26"/>
+                </svg>
+                GitLab
             </a>
         </div>
     </div>
