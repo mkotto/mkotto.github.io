@@ -32,8 +32,227 @@
             100% { background-position: center, 0% 50%; }
         }
 
+        #pixel-clouds {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        @keyframes drift-left {
+            from { transform: translateX(110vw); }
+            to   { transform: translateX(-300px); }
+        }
+
+        .pixel-cloud {
+            position: absolute;
+            left: 0;
+            background: transparent;
+            --cc: rgba(22, 17, 55, 0.88);
+            --ch: rgba(48, 36, 90, 0.8);
+        }
+
+        /* cloud-a: 18×7 px grid @ 5px — double-bump, tall body */
+        .cloud-a {
+            top: 7%;
+            width: 5px;
+            height: 5px;
+            animation: drift-left 55s linear infinite;
+            animation-delay: -12s;
+            box-shadow:
+                /* y=0 highlight x=4..6, x=11..13 */
+                20px 0 0 0 var(--ch), 25px 0 0 0 var(--ch), 30px 0 0 0 var(--ch),
+                55px 0 0 0 var(--ch), 60px 0 0 0 var(--ch), 65px 0 0 0 var(--ch),
+                /* y=1 body x=2..15 */
+                10px 5px 0 0 var(--cc), 15px 5px 0 0 var(--cc), 20px 5px 0 0 var(--cc),
+                25px 5px 0 0 var(--cc), 30px 5px 0 0 var(--cc), 35px 5px 0 0 var(--cc),
+                40px 5px 0 0 var(--cc), 45px 5px 0 0 var(--cc), 50px 5px 0 0 var(--cc),
+                55px 5px 0 0 var(--cc), 60px 5px 0 0 var(--cc), 65px 5px 0 0 var(--cc),
+                70px 5px 0 0 var(--cc), 75px 5px 0 0 var(--cc),
+                /* y=2 body x=1..16 */
+                5px 10px 0 0 var(--cc), 10px 10px 0 0 var(--cc), 15px 10px 0 0 var(--cc),
+                20px 10px 0 0 var(--cc), 25px 10px 0 0 var(--cc), 30px 10px 0 0 var(--cc),
+                35px 10px 0 0 var(--cc), 40px 10px 0 0 var(--cc), 45px 10px 0 0 var(--cc),
+                50px 10px 0 0 var(--cc), 55px 10px 0 0 var(--cc), 60px 10px 0 0 var(--cc),
+                65px 10px 0 0 var(--cc), 70px 10px 0 0 var(--cc), 75px 10px 0 0 var(--cc),
+                80px 10px 0 0 var(--cc),
+                /* y=3 body x=0..17 */
+                0 15px 0 0 var(--cc), 5px 15px 0 0 var(--cc), 10px 15px 0 0 var(--cc),
+                15px 15px 0 0 var(--cc), 20px 15px 0 0 var(--cc), 25px 15px 0 0 var(--cc),
+                30px 15px 0 0 var(--cc), 35px 15px 0 0 var(--cc), 40px 15px 0 0 var(--cc),
+                45px 15px 0 0 var(--cc), 50px 15px 0 0 var(--cc), 55px 15px 0 0 var(--cc),
+                60px 15px 0 0 var(--cc), 65px 15px 0 0 var(--cc), 70px 15px 0 0 var(--cc),
+                75px 15px 0 0 var(--cc), 80px 15px 0 0 var(--cc), 85px 15px 0 0 var(--cc),
+                /* y=4 body x=0..17 */
+                0 20px 0 0 var(--cc), 5px 20px 0 0 var(--cc), 10px 20px 0 0 var(--cc),
+                15px 20px 0 0 var(--cc), 20px 20px 0 0 var(--cc), 25px 20px 0 0 var(--cc),
+                30px 20px 0 0 var(--cc), 35px 20px 0 0 var(--cc), 40px 20px 0 0 var(--cc),
+                45px 20px 0 0 var(--cc), 50px 20px 0 0 var(--cc), 55px 20px 0 0 var(--cc),
+                60px 20px 0 0 var(--cc), 65px 20px 0 0 var(--cc), 70px 20px 0 0 var(--cc),
+                75px 20px 0 0 var(--cc), 80px 20px 0 0 var(--cc), 85px 20px 0 0 var(--cc),
+                /* y=5 body x=0..17 */
+                0 25px 0 0 var(--cc), 5px 25px 0 0 var(--cc), 10px 25px 0 0 var(--cc),
+                15px 25px 0 0 var(--cc), 20px 25px 0 0 var(--cc), 25px 25px 0 0 var(--cc),
+                30px 25px 0 0 var(--cc), 35px 25px 0 0 var(--cc), 40px 25px 0 0 var(--cc),
+                45px 25px 0 0 var(--cc), 50px 25px 0 0 var(--cc), 55px 25px 0 0 var(--cc),
+                60px 25px 0 0 var(--cc), 65px 25px 0 0 var(--cc), 70px 25px 0 0 var(--cc),
+                75px 25px 0 0 var(--cc), 80px 25px 0 0 var(--cc), 85px 25px 0 0 var(--cc),
+                /* y=6 body x=1..16 */
+                5px 30px 0 0 var(--cc), 10px 30px 0 0 var(--cc), 15px 30px 0 0 var(--cc),
+                20px 30px 0 0 var(--cc), 25px 30px 0 0 var(--cc), 30px 30px 0 0 var(--cc),
+                35px 30px 0 0 var(--cc), 40px 30px 0 0 var(--cc), 45px 30px 0 0 var(--cc),
+                50px 30px 0 0 var(--cc), 55px 30px 0 0 var(--cc), 60px 30px 0 0 var(--cc),
+                65px 30px 0 0 var(--cc), 70px 30px 0 0 var(--cc), 75px 30px 0 0 var(--cc),
+                80px 30px 0 0 var(--cc);
+        }
+
+        /* cloud-b: 14×6 px grid @ 5px — triple-bump, deeper body */
+        .cloud-b {
+            top: 18%;
+            width: 5px;
+            height: 5px;
+            animation: drift-left 40s linear infinite;
+            animation-delay: -28s;
+            box-shadow:
+                /* y=0 highlight x=1,2, x=5,6, x=9,10 */
+                5px 0 0 0 var(--ch), 10px 0 0 0 var(--ch),
+                25px 0 0 0 var(--ch), 30px 0 0 0 var(--ch),
+                45px 0 0 0 var(--ch), 50px 0 0 0 var(--ch),
+                /* y=1 body x=0..12 */
+                0 5px 0 0 var(--cc), 5px 5px 0 0 var(--cc), 10px 5px 0 0 var(--cc),
+                15px 5px 0 0 var(--cc), 20px 5px 0 0 var(--cc), 25px 5px 0 0 var(--cc),
+                30px 5px 0 0 var(--cc), 35px 5px 0 0 var(--cc), 40px 5px 0 0 var(--cc),
+                45px 5px 0 0 var(--cc), 50px 5px 0 0 var(--cc), 55px 5px 0 0 var(--cc),
+                60px 5px 0 0 var(--cc),
+                /* y=2 body x=0..13 */
+                0 10px 0 0 var(--cc), 5px 10px 0 0 var(--cc), 10px 10px 0 0 var(--cc),
+                15px 10px 0 0 var(--cc), 20px 10px 0 0 var(--cc), 25px 10px 0 0 var(--cc),
+                30px 10px 0 0 var(--cc), 35px 10px 0 0 var(--cc), 40px 10px 0 0 var(--cc),
+                45px 10px 0 0 var(--cc), 50px 10px 0 0 var(--cc), 55px 10px 0 0 var(--cc),
+                60px 10px 0 0 var(--cc), 65px 10px 0 0 var(--cc),
+                /* y=3 body x=0..13 */
+                0 15px 0 0 var(--cc), 5px 15px 0 0 var(--cc), 10px 15px 0 0 var(--cc),
+                15px 15px 0 0 var(--cc), 20px 15px 0 0 var(--cc), 25px 15px 0 0 var(--cc),
+                30px 15px 0 0 var(--cc), 35px 15px 0 0 var(--cc), 40px 15px 0 0 var(--cc),
+                45px 15px 0 0 var(--cc), 50px 15px 0 0 var(--cc), 55px 15px 0 0 var(--cc),
+                60px 15px 0 0 var(--cc), 65px 15px 0 0 var(--cc),
+                /* y=4 body x=0..12 */
+                0 20px 0 0 var(--cc), 5px 20px 0 0 var(--cc), 10px 20px 0 0 var(--cc),
+                15px 20px 0 0 var(--cc), 20px 20px 0 0 var(--cc), 25px 20px 0 0 var(--cc),
+                30px 20px 0 0 var(--cc), 35px 20px 0 0 var(--cc), 40px 20px 0 0 var(--cc),
+                45px 20px 0 0 var(--cc), 50px 20px 0 0 var(--cc), 55px 20px 0 0 var(--cc),
+                60px 20px 0 0 var(--cc),
+                /* y=5 body x=1..11 */
+                5px 25px 0 0 var(--cc), 10px 25px 0 0 var(--cc), 15px 25px 0 0 var(--cc),
+                20px 25px 0 0 var(--cc), 25px 25px 0 0 var(--cc), 30px 25px 0 0 var(--cc),
+                35px 25px 0 0 var(--cc), 40px 25px 0 0 var(--cc), 45px 25px 0 0 var(--cc),
+                50px 25px 0 0 var(--cc), 55px 25px 0 0 var(--cc);
+        }
+
+        /* cloud-c: 10×5 px grid @ 5px — single-bump, rounder body */
+        .cloud-c {
+            top: 12%;
+            width: 5px;
+            height: 5px;
+            animation: drift-left 30s linear infinite;
+            animation-delay: -5s;
+            box-shadow:
+                /* y=0 highlight x=2..5 */
+                10px 0 0 0 var(--ch), 15px 0 0 0 var(--ch),
+                20px 0 0 0 var(--ch), 25px 0 0 0 var(--ch),
+                /* y=1 body x=1..8 */
+                5px 5px 0 0 var(--cc), 10px 5px 0 0 var(--cc), 15px 5px 0 0 var(--cc),
+                20px 5px 0 0 var(--cc), 25px 5px 0 0 var(--cc), 30px 5px 0 0 var(--cc),
+                35px 5px 0 0 var(--cc), 40px 5px 0 0 var(--cc),
+                /* y=2 body x=0..9 */
+                0 10px 0 0 var(--cc), 5px 10px 0 0 var(--cc), 10px 10px 0 0 var(--cc),
+                15px 10px 0 0 var(--cc), 20px 10px 0 0 var(--cc), 25px 10px 0 0 var(--cc),
+                30px 10px 0 0 var(--cc), 35px 10px 0 0 var(--cc), 40px 10px 0 0 var(--cc),
+                45px 10px 0 0 var(--cc),
+                /* y=3 body x=0..9 */
+                0 15px 0 0 var(--cc), 5px 15px 0 0 var(--cc), 10px 15px 0 0 var(--cc),
+                15px 15px 0 0 var(--cc), 20px 15px 0 0 var(--cc), 25px 15px 0 0 var(--cc),
+                30px 15px 0 0 var(--cc), 35px 15px 0 0 var(--cc), 40px 15px 0 0 var(--cc),
+                45px 15px 0 0 var(--cc),
+                /* y=4 body x=1..8 */
+                5px 20px 0 0 var(--cc), 10px 20px 0 0 var(--cc), 15px 20px 0 0 var(--cc),
+                20px 20px 0 0 var(--cc), 25px 20px 0 0 var(--cc), 30px 20px 0 0 var(--cc),
+                35px 20px 0 0 var(--cc), 40px 20px 0 0 var(--cc);
+        }
+
+        /* cloud-d: 22×5 px grid @ 5px — wide stratus, triple-bump */
+        .cloud-d {
+            top: 3%;
+            width: 5px;
+            height: 5px;
+            animation: drift-left 68s linear infinite;
+            animation-delay: -40s;
+            box-shadow:
+                /* y=0 highlight x=3,4,5, x=10,11,12, x=18,19 */
+                15px 0 0 0 var(--ch), 20px 0 0 0 var(--ch), 25px 0 0 0 var(--ch),
+                50px 0 0 0 var(--ch), 55px 0 0 0 var(--ch), 60px 0 0 0 var(--ch),
+                90px 0 0 0 var(--ch), 95px 0 0 0 var(--ch),
+                /* y=1 body x=1..20 */
+                5px 5px 0 0 var(--cc), 10px 5px 0 0 var(--cc), 15px 5px 0 0 var(--cc),
+                20px 5px 0 0 var(--cc), 25px 5px 0 0 var(--cc), 30px 5px 0 0 var(--cc),
+                35px 5px 0 0 var(--cc), 40px 5px 0 0 var(--cc), 45px 5px 0 0 var(--cc),
+                50px 5px 0 0 var(--cc), 55px 5px 0 0 var(--cc), 60px 5px 0 0 var(--cc),
+                65px 5px 0 0 var(--cc), 70px 5px 0 0 var(--cc), 75px 5px 0 0 var(--cc),
+                80px 5px 0 0 var(--cc), 85px 5px 0 0 var(--cc), 90px 5px 0 0 var(--cc),
+                95px 5px 0 0 var(--cc), 100px 5px 0 0 var(--cc),
+                /* y=2 body x=0..21 */
+                0 10px 0 0 var(--cc), 5px 10px 0 0 var(--cc), 10px 10px 0 0 var(--cc),
+                15px 10px 0 0 var(--cc), 20px 10px 0 0 var(--cc), 25px 10px 0 0 var(--cc),
+                30px 10px 0 0 var(--cc), 35px 10px 0 0 var(--cc), 40px 10px 0 0 var(--cc),
+                45px 10px 0 0 var(--cc), 50px 10px 0 0 var(--cc), 55px 10px 0 0 var(--cc),
+                60px 10px 0 0 var(--cc), 65px 10px 0 0 var(--cc), 70px 10px 0 0 var(--cc),
+                75px 10px 0 0 var(--cc), 80px 10px 0 0 var(--cc), 85px 10px 0 0 var(--cc),
+                90px 10px 0 0 var(--cc), 95px 10px 0 0 var(--cc), 100px 10px 0 0 var(--cc),
+                105px 10px 0 0 var(--cc),
+                /* y=3 body x=0..21 */
+                0 15px 0 0 var(--cc), 5px 15px 0 0 var(--cc), 10px 15px 0 0 var(--cc),
+                15px 15px 0 0 var(--cc), 20px 15px 0 0 var(--cc), 25px 15px 0 0 var(--cc),
+                30px 15px 0 0 var(--cc), 35px 15px 0 0 var(--cc), 40px 15px 0 0 var(--cc),
+                45px 15px 0 0 var(--cc), 50px 15px 0 0 var(--cc), 55px 15px 0 0 var(--cc),
+                60px 15px 0 0 var(--cc), 65px 15px 0 0 var(--cc), 70px 15px 0 0 var(--cc),
+                75px 15px 0 0 var(--cc), 80px 15px 0 0 var(--cc), 85px 15px 0 0 var(--cc),
+                90px 15px 0 0 var(--cc), 95px 15px 0 0 var(--cc), 100px 15px 0 0 var(--cc),
+                105px 15px 0 0 var(--cc),
+                /* y=4 body x=1..20 */
+                5px 20px 0 0 var(--cc), 10px 20px 0 0 var(--cc), 15px 20px 0 0 var(--cc),
+                20px 20px 0 0 var(--cc), 25px 20px 0 0 var(--cc), 30px 20px 0 0 var(--cc),
+                35px 20px 0 0 var(--cc), 40px 20px 0 0 var(--cc), 45px 20px 0 0 var(--cc),
+                50px 20px 0 0 var(--cc), 55px 20px 0 0 var(--cc), 60px 20px 0 0 var(--cc),
+                65px 20px 0 0 var(--cc), 70px 20px 0 0 var(--cc), 75px 20px 0 0 var(--cc),
+                80px 20px 0 0 var(--cc), 85px 20px 0 0 var(--cc), 90px 20px 0 0 var(--cc),
+                95px 20px 0 0 var(--cc), 100px 20px 0 0 var(--cc);
+        }
+
+        /* cloud-e: 8×3 px grid @ 5px — wispy with highlight row */
+        .cloud-e {
+            top: 24%;
+            width: 5px;
+            height: 5px;
+            animation: drift-left 22s linear infinite;
+            animation-delay: -8s;
+            box-shadow:
+                /* y=0 highlight x=1..6 */
+                5px 0 0 0 var(--ch), 10px 0 0 0 var(--ch), 15px 0 0 0 var(--ch),
+                20px 0 0 0 var(--ch), 25px 0 0 0 var(--ch), 30px 0 0 0 var(--ch),
+                /* y=1 body x=0..7 */
+                0 5px 0 0 var(--cc), 5px 5px 0 0 var(--cc), 10px 5px 0 0 var(--cc),
+                15px 5px 0 0 var(--cc), 20px 5px 0 0 var(--cc), 25px 5px 0 0 var(--cc),
+                30px 5px 0 0 var(--cc), 35px 5px 0 0 var(--cc),
+                /* y=2 body x=0..7 */
+                0 10px 0 0 var(--cc), 5px 10px 0 0 var(--cc), 10px 10px 0 0 var(--cc),
+                15px 10px 0 0 var(--cc), 20px 10px 0 0 var(--cc), 25px 10px 0 0 var(--cc),
+                30px 10px 0 0 var(--cc), 35px 10px 0 0 var(--cc);
+        }
+
         @media (prefers-reduced-motion: reduce) {
             body { animation: none; }
+            .pixel-cloud { animation: none; display: none; }
         }
 
         .container {
@@ -206,6 +425,13 @@
     </style>
 </head>
 <body>
+    <div id="pixel-clouds">
+        <div class="pixel-cloud cloud-d"></div>
+        <div class="pixel-cloud cloud-a"></div>
+        <div class="pixel-cloud cloud-c"></div>
+        <div class="pixel-cloud cloud-b"></div>
+        <div class="pixel-cloud cloud-e"></div>
+    </div>
     <div id="starfield"></div>
     <div class="container">
         <h1 class="hero-name">Mairbek<br>Tungaev</h1>
