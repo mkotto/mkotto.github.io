@@ -300,6 +300,26 @@
             font-size: 0.85rem;
             font-weight: 600;
             transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+            position: relative;
+            overflow: visible;
+        }
+
+        .firefly {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            width: 4px;
+            height: 4px;
+            background: #c8ff80;
+            box-shadow: 0 0 6px 3px rgba(180, 255, 100, 0.75);
+            animation: fireflyFloat var(--dur, 1.2s) ease-out forwards;
+            z-index: 10;
+        }
+
+        @keyframes fireflyFloat {
+            0%   { opacity: 0;   transform: translate(0, 0) scale(1); }
+            25%  { opacity: 1; }
+            100% { opacity: 0;   transform: translate(var(--tx, 0px), var(--ty, -30px)) scale(0.4); }
         }
 
         .tile:hover {
@@ -521,6 +541,39 @@
         }
 
         createStarfield(100);
+
+        document.querySelectorAll('.tile').forEach(tile => {
+            let spawnInterval = null;
+
+            function spawnFirefly() {
+                const ff = document.createElement('div');
+                ff.className = 'firefly';
+
+                const w = tile.offsetWidth;
+                const h = tile.offsetHeight;
+                ff.style.left = (Math.random() * w) + 'px';
+                ff.style.top  = (Math.random() * h) + 'px';
+
+                const angle = Math.random() * 2 * Math.PI;
+                const dist  = 20 + Math.random() * 40;
+                ff.style.setProperty('--tx', Math.cos(angle) * dist + 'px');
+                ff.style.setProperty('--ty', Math.sin(angle) * dist - 10 + 'px');
+                ff.style.setProperty('--dur', (0.9 + Math.random() * 0.8) + 's');
+
+                tile.appendChild(ff);
+                ff.addEventListener('animationend', () => ff.remove());
+            }
+
+            tile.addEventListener('mouseenter', () => {
+                spawnFirefly();
+                spawnInterval = setInterval(spawnFirefly, 120);
+            });
+
+            tile.addEventListener('mouseleave', () => {
+                clearInterval(spawnInterval);
+                spawnInterval = null;
+            });
+        });
     </script>
 </body>
 </html>
