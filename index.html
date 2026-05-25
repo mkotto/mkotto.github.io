@@ -559,6 +559,44 @@
 
         createStarfield(100);
 
+        document.getElementById('bgToggle').addEventListener('change', () => {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const t = ctx.currentTime;
+
+            // warm mid-tone body — short sine, no sub-bass
+            const osc = ctx.createOscillator();
+            const oscGain = ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(480, t);
+            osc.frequency.exponentialRampToValueAtTime(200, t + 0.025);
+            oscGain.gain.setValueAtTime(0.22, t);
+            oscGain.gain.exponentialRampToValueAtTime(0.001, t + 0.045);
+            osc.connect(oscGain);
+            oscGain.connect(ctx.destination);
+            osc.start(t);
+            osc.stop(t + 0.05);
+
+            // crisp click transient — bandpass noise
+            const bufLen = Math.floor(ctx.sampleRate * 0.006);
+            const buf = ctx.createBuffer(1, bufLen, ctx.sampleRate);
+            const data = buf.getChannelData(0);
+            for (let i = 0; i < bufLen; i++) {
+                data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufLen, 2);
+            }
+            const src = ctx.createBufferSource();
+            src.buffer = buf;
+            const filter = ctx.createBiquadFilter();
+            filter.type = 'bandpass';
+            filter.frequency.value = 3000;
+            filter.Q.value = 1.2;
+            const clickGain = ctx.createGain();
+            clickGain.gain.setValueAtTime(0.25, t);
+            src.connect(filter);
+            filter.connect(clickGain);
+            clickGain.connect(ctx.destination);
+            src.start(t);
+        });
+
         document.querySelectorAll('.tile').forEach(tile => {
             let spawnInterval = null;
 
