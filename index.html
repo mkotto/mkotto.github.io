@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mairbek Tungaev</title>
-    <style>
+<style>
         *, *::before, *::after {
             box-sizing: border-box;
             margin: 0;
@@ -269,11 +269,36 @@
             100% { background-position: 200% 50%; }
         }
 
+        @keyframes nameGlitch {
+            0%, 32%, 100% {
+                transform: translate(0, 0);
+                filter: drop-shadow(0 0 18px rgba(168, 85, 247, 0.35));
+            }
+            6%  { transform: translate(-3px, 1px);  filter: blur(4px) contrast(25) brightness(1.3); }
+            14% { transform: translate(3px, -1px);  filter: blur(6px) contrast(40) brightness(1.5); }
+            22% { transform: translate(-1px, 0);    filter: blur(3px) contrast(20) brightness(1.2); }
+        }
+
+        @keyframes glitch-r {
+            0%, 30%, 100% { clip-path: inset(0 0 100% 0); transform: translate(0); }
+            6%  { clip-path: inset(18% 0 52% 0); transform: translate(-6px, 1px); }
+            14% { clip-path: inset(63% 0 12% 0); transform: translate(-4px, -1px); }
+            22% { clip-path: inset(38% 0 42% 0); transform: translate(-5px, 0); }
+        }
+
+        @keyframes glitch-c {
+            0%, 30%, 100% { clip-path: inset(0 0 100% 0); transform: translate(0); }
+            6%  { clip-path: inset(45% 0 30% 0); transform: translate(6px, -1px); }
+            14% { clip-path: inset(12% 0 65% 0); transform: translate(5px, 2px); }
+            22% { clip-path: inset(72% 0 8% 0); transform: translate(4px, -1px); }
+        }
+
         .hero-name {
             font-size: clamp(2.5rem, 10vw, 4rem);
             font-weight: 900;
             line-height: 1.05;
             letter-spacing: -0.04em;
+            position: relative;
             background: linear-gradient(
                 90deg,
                 #38bdf8,
@@ -290,8 +315,51 @@
             -webkit-text-fill-color: transparent;
             color: transparent;
             animation: nameGradient 18s linear infinite;
+            cursor: default;
             filter: drop-shadow(0 0 18px rgba(168, 85, 247, 0.35));
             padding-bottom: 0.2em;
+        }
+
+        .hero-name::before,
+        .hero-name::after {
+            content: "Mairbek\ATungaev";
+            white-space: pre;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            font-family: inherit;
+            font-size: inherit;
+            font-weight: inherit;
+            line-height: inherit;
+            letter-spacing: inherit;
+            pointer-events: none;
+            background: none;
+        }
+
+        .hero-name::before {
+            -webkit-text-fill-color: #c084fc;
+            color: #c084fc;
+            clip-path: inset(0 0 100% 0);
+        }
+
+        .hero-name::after {
+            -webkit-text-fill-color: #00ffee;
+            color: #00ffee;
+            clip-path: inset(0 0 100% 0);
+        }
+
+        .hero-name:hover {
+            animation: nameGradient 18s linear infinite, nameGlitch 1.2s steps(1) infinite;
+        }
+
+        .hero-name:hover::before {
+            animation: glitch-r 1.2s steps(1) infinite;
+        }
+
+        .hero-name:hover::after {
+            animation: glitch-c 1.2s steps(1) infinite;
         }
 
         .accent-bar {
