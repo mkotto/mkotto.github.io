@@ -517,6 +517,31 @@
             background-size: 400% 400%;
         }
 
+        #music-toggle-wrap {
+            bottom: 68px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.8s ease;
+        }
+
+        #music-toggle-wrap.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #musicToggle {
+            display: none;
+        }
+
+        #musicToggle:checked + .bg-toggle-label .toggle-track {
+            background: #a855f7;
+            box-shadow: 0 0 12px rgba(168, 85, 247, 0.45);
+        }
+
+        #musicToggle:checked + .bg-toggle-label .toggle-thumb {
+            transform: translateX(16px);
+        }
+
         @media (min-width: 480px) {
             .icon-grid {
                 gap: 14px;
@@ -600,6 +625,18 @@
         </div>
     </div>
 
+    <div class="bg-toggle-wrap" id="music-toggle-wrap">
+        <input type="checkbox" id="musicToggle">
+        <label for="musicToggle" class="bg-toggle-label">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 18V5l12-2v13"/>
+                <circle cx="6" cy="18" r="3"/>
+                <circle cx="18" cy="16" r="3"/>
+            </svg>
+            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+        </label>
+    </div>
+
     <div class="bg-toggle-wrap">
         <input type="checkbox" id="bgToggle">
         <label for="bgToggle" class="bg-toggle-label">
@@ -650,6 +687,7 @@
         createStarfield(100);
 
         document.getElementById('bgToggle').addEventListener('change', () => {
+            if (document.getElementById('musicToggle').checked) return;
             const ctx = new (window.AudioContext || window.webkitAudioContext)();
             const t = ctx.currentTime;
 
@@ -685,6 +723,123 @@
             filter.connect(clickGain);
             clickGain.connect(ctx.destination);
             src.start(t);
+        });
+
+        let toggleClickCount = 0;
+        const cloudsContainer = document.getElementById('pixel-clouds');
+        const cloudTypes = ['cloud-a', 'cloud-b', 'cloud-c', 'cloud-d', 'cloud-e'];
+
+        document.getElementById('bgToggle').addEventListener('click', () => {
+            toggleClickCount++;
+            if (toggleClickCount === 10) spawnExtraClouds();
+            if (toggleClickCount === 20) document.getElementById('music-toggle-wrap').classList.add('visible');
+        });
+
+        function spawnExtraClouds() {
+            const extras = [
+                { type: 'cloud-b', top: 30, delay: -6 },
+                { type: 'cloud-c', top: 45, delay: -18 },
+                { type: 'cloud-a', top: 28, delay: -33 },
+                { type: 'cloud-e', top: 38, delay: -2 },
+                { type: 'cloud-d', top: 42, delay: -50 },
+                { type: 'cloud-c', top: 35, delay: -14 },
+                { type: 'cloud-b', top: 48, delay: -25 },
+            ];
+            extras.forEach(({ type, top, delay }) => {
+                const cloud = document.createElement('div');
+                cloud.className = `pixel-cloud ${type}`;
+                cloud.style.top = `${top}%`;
+                cloud.style.animationDelay = `${delay}s`;
+                cloud.style.opacity = '0';
+                cloud.style.transition = 'opacity 1.5s ease';
+                cloudsContainer.appendChild(cloud);
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => { cloud.style.opacity = '1'; });
+                });
+            });
+        }
+
+        let musicCtx = null;
+        let musicMaster = null;
+        let musicLoopTimer = null;
+
+        function startMusic() {
+            musicCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+            function makeReverb(duration) {
+                const len = musicCtx.sampleRate * duration;
+                const buf = musicCtx.createBuffer(2, len, musicCtx.sampleRate);
+                for (let c = 0; c < 2; c++) {
+                    const d = buf.getChannelData(c);
+                    for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2.5);
+                }
+                return buf;
+            }
+
+            const convolver = musicCtx.createConvolver();
+            convolver.buffer = makeReverb(3);
+
+            musicMaster = musicCtx.createGain();
+            musicMaster.gain.setValueAtTime(0, musicCtx.currentTime);
+            musicMaster.gain.linearRampToValueAtTime(0.22, musicCtx.currentTime + 4);
+            musicMaster.connect(musicCtx.destination);
+
+            const wet = musicCtx.createGain();
+            wet.gain.value = 0.45;
+            convolver.connect(wet);
+            wet.connect(musicMaster);
+
+            const beat = 60 / 72;
+            const scale = [220, 246.94, 261.63, 293.66, 329.63, 349.23, 392, 440, 493.88, 523.25];
+            const melody = [
+                [4, 1], [3, 0.5], [2, 0.5], [0, 2],
+                [3, 1], [4, 0.5], [6, 0.5], [4, 2],
+                [2, 1], [3, 0.5], [4, 0.5], [7, 2],
+                [6, 1], [4, 1], [2, 1], [0, 3]
+            ];
+            const totalBeats = melody.reduce((s, [, d]) => s + d, 0);
+
+            function playNote(freq, start, dur) {
+                const osc = musicCtx.createOscillator();
+                const g = musicCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.value = freq;
+                g.gain.setValueAtTime(0, start);
+                g.gain.linearRampToValueAtTime(0.38, start + 0.08);
+                g.gain.setValueAtTime(0.38, start + dur * beat - 0.15);
+                g.gain.linearRampToValueAtTime(0, start + dur * beat);
+                osc.connect(g);
+                g.connect(musicMaster);
+                g.connect(convolver);
+                osc.start(start);
+                osc.stop(start + dur * beat + 0.05);
+            }
+
+            function scheduleLoop(startTime) {
+                let t = startTime;
+                for (const [idx, dur] of melody) {
+                    playNote(scale[idx], t, dur);
+                    t += dur * beat;
+                }
+                const loopEnd = startTime + totalBeats * beat;
+                musicLoopTimer = setTimeout(() => scheduleLoop(loopEnd), (loopEnd - musicCtx.currentTime - 2) * 1000);
+            }
+
+            scheduleLoop(musicCtx.currentTime + 0.1);
+        }
+
+        function stopMusic() {
+            if (!musicMaster || !musicCtx) return;
+            const t = musicCtx.currentTime;
+            musicMaster.gain.cancelScheduledValues(t);
+            musicMaster.gain.setValueAtTime(musicMaster.gain.value, t);
+            musicMaster.gain.linearRampToValueAtTime(0, t + 1.5);
+            clearTimeout(musicLoopTimer);
+            setTimeout(() => { musicCtx.close(); musicCtx = null; musicMaster = null; }, 1600);
+        }
+
+        document.getElementById('musicToggle').addEventListener('change', e => {
+            e.target.checked ? startMusic() : stopMusic();
         });
 
         document.querySelectorAll('.tile').forEach(tile => {
