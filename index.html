@@ -733,10 +733,33 @@
             toggleClickCount++;
             if (toggleClickCount === 10) spawnExtraClouds();
             if (toggleClickCount === 20) {
+                playMarioCoin();
                 document.getElementById('music-toggle-wrap').classList.add('visible');
                 document.getElementById('musicToggle').checked = false;
             }
         });
+
+        function playMarioCoin() {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const t = ctx.currentTime;
+            const osc = ctx.createOscillator();
+            const g = ctx.createGain();
+            
+            osc.type = 'square';
+            // Mario coin is B5 (987.77Hz) then E6 (1318.51Hz)
+            osc.frequency.setValueAtTime(987.77, t);
+            osc.frequency.setValueAtTime(1318.51, t + 0.1);
+            
+            g.gain.setValueAtTime(0.2, t);
+            g.gain.setValueAtTime(0.2, t + 0.1);
+            g.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
+            
+            osc.connect(g);
+            g.connect(ctx.destination);
+            
+            osc.start(t);
+            osc.stop(t + 0.45);
+        }
 
         function spawnExtraClouds() {
             const extras = [
